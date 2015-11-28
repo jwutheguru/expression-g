@@ -24,6 +24,12 @@
         }
     ],
 
+    "background": [
+        {
+            "scripts": ["js/backgroundScript.js"]
+        }
+    ],
+
     "commands": {
         "_execute_browser_action": {
             "suggested_key": {
