@@ -1,0 +1,58 @@
+@rootFontSize: 12px;
+@baseTransitionTime: 250ms;
+
+@baseBorder: solid 3px #ccc;
+@baseBorderHover: solid 3px #aaa;
+
+mark.__expression-g-highlight__ {
+    background-color: #f93;
+    border: 1px solid #c60;
+}
+
+#__expression-g__ {
+
+    #__eg-search-row__ {
+        width: 265px;
+    }
+
+    input[type="text"] {
+        display: inline-block;
+        width: 200px;
+        padding: 4px;
+        border: @baseBorder;
+        font-size: @rootFontSize;
+        text-align: left;
+        transition: border @baseTransitionTime ease;
+
+        &:hover, &:focus {
+            border: @baseBorderHover;
+            outline: none;
+        }
+    }
+
+    button {
+        display: inline-block;
+        padding: 4px;
+        color: #fff;
+        font-size: @rootFontSize;
+        background-color: #c9c9c9;
+        border: @baseBorderHover;
+        transition: all @baseTransitionTime ease;
+
+        &:hover, &:focus {
+            color: #888;
+            background-color: #fff;
+            border: @baseBorder;
+            outline: none;
+            cursor: pointer;
+        }
+
+        &:active {
+            color: #fff;
+            background-color: #888;
+            border: @baseBorder;
+        }
+
+    }
+
+}

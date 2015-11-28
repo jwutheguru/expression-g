@@ -1,0 +1,43 @@
+mark.__expression-g-highlight__ {
+  background-color: #f93;
+  border: 1px solid #c60;
+}
+#__expression-g__ #__eg-search-row__ {
+  width: 265px;
+}
+#__expression-g__ input[type="text"] {
+  display: inline-block;
+  width: 200px;
+  padding: 4px;
+  border: solid 3px #cccccc;
+  font-size: 12px;
+  text-align: left;
+  transition: border 250ms ease;
+}
+#__expression-g__ input[type="text"]:hover,
+#__expression-g__ input[type="text"]:focus {
+  border: solid 3px #aaaaaa;
+  outline: none;
+}
+#__expression-g__ button {
+  display: inline-block;
+  padding: 4px;
+  color: #fff;
+  font-size: 12px;
+  background-color: #c9c9c9;
+  border: solid 3px #aaaaaa;
+  transition: all 250ms ease;
+}
+#__expression-g__ button:hover,
+#__expression-g__ button:focus {
+  color: #888;
+  background-color: #fff;
+  border: solid 3px #cccccc;
+  outline: none;
+  cursor: pointer;
+}
+#__expression-g__ button:active {
+  color: #fff;
+  background-color: #888;
+  border: solid 3px #cccccc;
+}

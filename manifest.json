@@ -2,17 +2,42 @@
     "manifest_version": 2,
 
     "name": "expression/g",
-    "description": "Regular Expression Search",
     "version": "0.1",
+    "description": "Regular Expression Search",
+    "icons": {
+        "16": "img/icon-16.png",
+        "48": "img/icon-48.png",
+        "128": "img/icon-128.png"
+    },
 
     "browser_action": {
-        "default_icon": "img/icon.png",
-        "default_popup": "popup.html",
-        "default_title": "expression/g"
+        "default_title": "expression/g",
+        "default_popup": "popup.html"
+    },
+
+    "content_scripts": [
+        {
+            //"matches": ["http://*/*", "https://*/*", "file:///"],
+            "matches": ["<all_urls>"],
+            "js": ["js/contentScript.js"],
+            "css": ["css/styles.css"]
+        }
+    ],
+
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "default": "Shift+Alt+G",
+                "mac": "Shift+Alt+G",
+                "windows": "Shift+Alt+G",
+                "linux": "Shift+Alt+G",
+                "chromeos": "Shift+Alt+G"
+            }
+        }
     },
 
     "permissions": [
         "activeTab",
-        "https://ajax.googleapis.com/"
+        "tabs"
     ]
 }
