@@ -8,7 +8,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, responseCallback)
 
             break;
         case 'clear':
-            clearSearch();
+            clearSearch(function() {
+                responseCallback();
+            });
 
             break;
         default:
@@ -83,15 +85,23 @@ function search(regexStr, callback) {
 
         parentNode.replaceChild(newNode, currentNode);
     }
+
     if (typeof callback === 'function')
         callback.apply(null, null);
 }
 
 function clearSearch(callback) {
-    var matches = document.querySelectorAll('mark.__expression-g-highlight__');
-    for (var i = 0; i < matches.length; i++) {
-        matches[0].parentNode.removeChild(matches[0]);
+    var highlights = document.querySelectorAll('mark.__expression-g-highlight__');
+
+    for (var i = 0; i < highlights.length; i++) {
+        var highlight = highlights[i];
+        var textNode = document.createTextNode(highlight.textContent);
+
+        highlight.parentNode.insertBefore(textNode, highlight);
+        highlight.parentNode.removeChild(highlight);
     }
+
+    document.body.normalize();
 
     if (typeof callback === 'function')
         callback.apply(null, null);

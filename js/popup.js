@@ -13,8 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
 
             regexStr = sanitizeRegexStr(regexStr);
-            //clearSearchResults();
-            doSearch(regexStr);
+
+            clearSearchResults(function() {                
+                doSearch(regexStr);
+            });
         }
         else if (event.keyCode === 27) { // Escape
             clearSearchResults();
@@ -38,13 +40,16 @@ document.addEventListener('DOMContentLoaded', function() {
         return regexStr;
     }
 
-    function clearSearchResults() {
+    function clearSearchResults(callback) {
         var message = {
             command: 'clear',
         };
 
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, message);
+            chrome.tabs.sendMessage(tabs[0].id, message, function(res) {
+                if (typeof callback === 'function')
+                    callback.call(null, res);
+            });
         });
     }
 
