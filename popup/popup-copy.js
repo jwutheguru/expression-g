@@ -1,10 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-
+    
     var expressionInput = document.getElementById('__eg-expression__');
     var prevButton = document.getElementById('__eg-prev__');
     var nextButton = document.getElementById('__eg-next__');
-
-    //var bgPort = chrome.runtime.connect();
 
     expressionInput.addEventListener('keypress', function(event) {
         if (event.keyCode === 13) { // Enter

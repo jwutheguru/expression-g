@@ -12,23 +12,22 @@
 
     "browser_action": {
         "default_title": "expression/g",
-        "default_popup": "popup.html"
+        "default_popup": "popup/popup.html"
     },
 
     "content_scripts": [
         {
             //"matches": ["http://*/*", "https://*/*", "file:///"],
             "matches": ["<all_urls>"],
-            "js": ["js/contentScript.js"],
-            "css": ["css/styles.css"]
+            "js": ["content/content.js"],
+            "css": ["content/content.css"]
         }
     ],
 
-    "background": [
-        {
-            "scripts": ["js/backgroundScript.js"]
-        }
-    ],
+    "background": {
+            "scripts": ["background/background.js"],
+            "persistent": false
+    },
 
     "commands": {
         "_execute_browser_action": {

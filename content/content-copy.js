@@ -1,4 +1,5 @@
 chrome.runtime.onMessage.addListener(function(request, sender, responseCallback) {
+    debugger;
     if (!request || !request.command)
         return;
 
@@ -106,3 +107,39 @@ function clearSearch(callback) {
     if (typeof callback === 'function')
         callback.apply(null, null);
 }
+
+// "use strict";
+
+// window.__ExpressionG = {
+
+//     isActive: false,
+//     searchString: '',
+//     searchRegex: null,
+//     matchIndex: 0,
+//     matchCount: 0,
+
+//     enable: function() {
+
+
+
+//     },
+
+//     disable: function() {
+
+
+
+//     },
+
+//     search: function(regex, callback) {
+
+
+
+//     },
+
+//     clear: function(callback) {
+
+
+
+//     }
+
+// };
