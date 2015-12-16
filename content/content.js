@@ -30,8 +30,8 @@ function __ExpressionG() {
     var isActive = false;
     var searchString = '';
     var searchRegex = null;
-    var matchIndex = 0;
     var matchCount = 0;
+    var matchIndex = 0;
 
     function enable() {
         debugger;
