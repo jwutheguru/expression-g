@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 debugger;
                 // After background page responds with this tab's tabState
 
-                if (!response.error && response.data) {
+                if (!response.error && response.data && response.data.tabState) {
                     tabState = response.data.tabState;
                     expressionInput.value = tabState.searchString;
                 }
@@ -59,13 +59,13 @@ document.addEventListener('DOMContentLoaded', function() {
     })();
 
     function handleExpressionInputKeypress(event) {
-        console.log('[POP] Input Keypress. keyCode: ', event.keyCode);
-        debugger;
 
         switch (event.keyCode) {
 
             // Enter key
             case 13:
+                console.log('[POP] Enter keypress');
+                debugger;
 
                 var inputString = expressionInput.value.trim();
 
@@ -105,6 +105,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Escape key
             case 27:
+                console.log('[POP] Enter keypress');
+                debugger;
 
 
 
@@ -136,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function clearSearch(callback) {
-        
+
     }
 
     function clearSearchResults(callback) {
@@ -164,5 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
             chrome.tabs.sendMessage(tabs[0].id, message);
         });
     }
+
+    // Set up event handler
+    expressionInput.addEventListener('keypress', handleExpressionInputKeypress);
 
 });

@@ -57,16 +57,16 @@ var TabStateManager = (function() {
      * @return {TabState} The TabState that was saved.
      */
     function updateTabState(tabId, tabState) {
-        var tabState = getTabState(tabId);
+        var currentTabState = getTabState(tabId);
 
-        if (!tabState)
-            tabState = {};
+        if (!currentTabState)
+            currentTabState = {};
 
         for (var prop in tabState) {
-            tabState[prop] = tabState[prop];
+            currentTabState[prop] = tabState[prop];
         }
 
-        return setTabState(tabId, tabState);
+        return setTabState(tabId, currentTabState);
     }
 
     /**
@@ -91,6 +91,7 @@ var TabStateManager = (function() {
     return {
         setTabState: setTabState,
         getTabState: getTabState,
+        updateTabState: updateTabState,
         clearTabState: clearTabState,
         clearTabStates: clearTabStates
     };
@@ -115,18 +116,18 @@ chrome.tabs.onActivated.addListener(function(tab) {
     var tabId = tab.tabId;
     var tabState = TabStateManager.getTabState(tabId);
 
-    if (!tabState) {
-        var coinFlip = !!(~~(Math.random() * 2));
+    // if (!tabState) {
+    //     var coinFlip = !!(~~(Math.random() * 2));
 
-        if (coinFlip) {
-            var state = {
-                isActive: true,
-                searchString: 'blah'
-            };
+    //     if (coinFlip) {
+    //         var state = {
+    //             isActive: true,
+    //             searchString: 'blah'
+    //         };
 
-            tabState = TabStateManager.setTabState(tabId, state);
-        }
-    }
+    //         tabState = TabStateManager.setTabState(tabId, state);
+    //     }
+    // }
 
     // see if current tab has active search. If so, place a 'on' badge on the plugin icon.
     if (tabState && tabState.isActive)
@@ -165,8 +166,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     switch (message.request) {
 
         case 'getTabState':
-            var tabState = TabStateManager.getTabState(message.data.tabId);
-            console.log('[BG] onMessage "getTabState": ', tabState);
+            console.log('[BG] onMessage "getTabState(tabId)". tabId: ', data.tabId);
+            var tabState = TabStateManager.getTabState(data.tabId);
 
             var responseData = {
                 tabState: tabState
@@ -179,8 +180,28 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         break;
 
         case 'setTabState':
-            var tabState = TabStateManager.setTabState(message.data.tabId);
-            console.log('[BG] onMessage "getTabState": ', tabState);
+            console.log('[BG] onMessage "setTabState(tabId, tabState)". tabId: ', data.tabId, ' | tabState: ', data.tabState);
+            var tabState = TabStateManager.setTabState(data.tabId, data.tabState);
+
+            if (tabState && tabState.isActive)
+                chrome.browserAction.setBadgeText({ text: 'on' });
+            else
+                chrome.browserAction.setBadgeText({ text: '' });
+            
+            sendResponse({
+                error: null,
+                tabState: tabState
+            });
+        break;
+
+        case 'updateTabState':
+            console.log('[BG] onMessage "updateTabState(tabId, tabState)". tabId: ', data.tabId, ' | tabState: ', data.tabState);
+            var tabState = TabStateManager.updateTabState(data.tabId, data.tabState);
+
+            if (tabState && tabState.isActive)
+                chrome.browserAction.setBadgeText({ text: 'on' });
+            else
+                chrome.browserAction.setBadgeText({ text: '' });
             
             sendResponse({
                 error: null,
