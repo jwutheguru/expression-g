@@ -116,24 +116,11 @@ chrome.tabs.onActivated.addListener(function(tab) {
     var tabId = tab.tabId;
     var tabState = TabStateManager.getTabState(tabId);
 
-    // if (!tabState) {
-    //     var coinFlip = !!(~~(Math.random() * 2));
-
-    //     if (coinFlip) {
-    //         var state = {
-    //             isActive: true,
-    //             searchString: 'blah'
-    //         };
-
-    //         tabState = TabStateManager.setTabState(tabId, state);
-    //     }
-    // }
-
     // see if current tab has active search. If so, place a 'on' badge on the plugin icon.
     if (tabState && tabState.isActive)
-        chrome.browserAction.setBadgeText({ text: 'on' });
+        chrome.browserAction.setBadgeText({ text: 'on', tabId: tabId });
     else
-        chrome.browserAction.setBadgeText({ text: '' });
+        chrome.browserAction.setBadgeText({ text: '', tabId: tabId });
 });
 
 /* 
@@ -160,7 +147,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
      // If the message's target isn't 'background', disregard it. 
     if (message.target !== 'background')
         return;
-    debugger;
+    
     var data = message.data; // aliasing the message's request data for convenience.
 
     switch (message.request) {
@@ -184,9 +171,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             var tabState = TabStateManager.setTabState(data.tabId, data.tabState);
 
             if (tabState && tabState.isActive)
-                chrome.browserAction.setBadgeText({ text: 'on' });
+                chrome.browserAction.setBadgeText({ text: 'on', tabId: data.tabId });
             else
-                chrome.browserAction.setBadgeText({ text: '' });
+                chrome.browserAction.setBadgeText({ text: '', tabId: data.tabId });
             
             sendResponse({
                 error: null,
@@ -199,9 +186,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             var tabState = TabStateManager.updateTabState(data.tabId, data.tabState);
 
             if (tabState && tabState.isActive)
-                chrome.browserAction.setBadgeText({ text: 'on' });
+                chrome.browserAction.setBadgeText({ text: 'on', tabId: data.tabId });
             else
-                chrome.browserAction.setBadgeText({ text: '' });
+                chrome.browserAction.setBadgeText({ text: '', tabId: data.tabId });
             
             sendResponse({
                 error: null,

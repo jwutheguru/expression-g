@@ -46,9 +46,9 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             chrome.runtime.sendMessage(message, function(response) {
-                debugger;
                 // After background page responds with this tab's tabState
 
+                // If background page holds a tabState for this tab, assign it.
                 if (!response.error && response.data && response.data.tabState) {
                     tabState = response.data.tabState;
                     expressionInput.value = tabState.searchString;
@@ -89,12 +89,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         // After background page responds with successful update
 
                         if (isPreviouslyActive) {
-
+                            clearSearch(doSearch);
                         }
                         else {
-
+                            doSearch();
                         }
                     });
+
+
 
                 }
                 else { // if search string didn't change, 'Enter' key advances search result on page
@@ -138,34 +140,60 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function clearSearch(callback) {
-
-    }
-
-    function clearSearchResults(callback) {
         var message = {
-            command: 'clear',
+            'sender': 'popup',
+            'target': 'content',
+            'request': 'clearSearch',
+            'data': { }
         };
 
-        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, message, function(res) {
-                if (typeof callback === 'function')
-                    callback.call(null, res);
-            });
-        });
+        if (typeof callback === 'function')
+            chrome.tabs.sendMessage(tabId, message, callback);
+        else
+            chrome.tabs.sendMessage(tabId, message);
     }
 
-    function doSearch(regexStr) {
-        regexStr = regexStr.trim();
+    // function clearSearchResults(callback) {
+    //     var message = {
+    //         command: 'clear',
+    //     };
 
+    //     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    //         chrome.tabs.sendMessage(tabs[0].id, message, function(res) {
+    //             if (typeof callback === 'function')
+    //                 callback.call(null, res);
+    //         });
+    //     });
+    // }
+
+    function doSearch(callback) {
         var message = {
-            command: 'search',
-            regexStr: regexStr
+            'sender': 'popup',
+            'target': 'content',
+            'request': 'doSearch',
+            'data': {
+                tabState: tabState
+            }
         };
 
-        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, message);
-        });
+        if (typeof callback === 'function')
+            chrome.tabs.sendMessage(tabId, message, callback);
+        else
+            chrome.tabs.sendMessage(tabId, message);
     }
+
+    // function doSearch(regexStr) {
+    //     regexStr = regexStr.trim();
+
+    //     var message = {
+    //         command: 'search',
+    //         regexStr: regexStr
+    //     };
+
+    //     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    //         chrome.tabs.sendMessage(tabs[0].id, message);
+    //     });
+    // }
 
     // Set up event handler
     expressionInput.addEventListener('keypress', handleExpressionInputKeypress);
