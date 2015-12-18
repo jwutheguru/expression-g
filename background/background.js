@@ -147,7 +147,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
      // If the message's target isn't 'background', disregard it. 
     if (message.target !== 'background')
         return;
-    
+
     var data = message.data; // aliasing the message's request data for convenience.
 
     switch (message.request) {
@@ -193,22 +193,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             sendResponse({
                 error: null,
                 tabState: tabState
-            });
-        break;
-
-        case 'search':
-
-
-            sendResponse({
-                error: null
-            });
-        break;
-
-
-        case 'clear':
-
-            sendResponse({
-                error: null
             });
         break;
 

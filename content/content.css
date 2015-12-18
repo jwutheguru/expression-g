@@ -1,6 +1,12 @@
 mark.__expression-g-highlight__ {
-  background-color: #f93;
+  color: inherit;
+  background-color: rgba(255, 153, 51, 0.5);
   border: 1px solid #c60;
+  opacity: 0.75;
+}
+mark.__expression-g-highlight__.__expression-g-highlight-focus__ {
+  background-color: rgba(238, 102, 51, 0.75);
+  opacity: 1;
 }
 #__expression-g__ #__eg-search-row__ {
   width: 265px;
